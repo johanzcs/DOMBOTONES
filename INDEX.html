@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botones Animados</title>
+    <style> 
+       
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000000;
+            margin: 0;
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .animated-button {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            width: 300px;
+            height: 200px;
+            text-decoration: none;
+            font-size: 1.44em;
+            font-weight: bold;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.12s, box-shadow 0.12s;
+        }
+        
+        .animated-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.11);
+            transition: filter 0.12s;
+            z-index: -2;
+        }
+        
+        .animated-button:hover::before {
+            filter: brightness(0.9);
+        }
+        
+        .animated-button:hover {
+            transform: scale(1.10);
+            box-shadow: 0 110px 120px rgba(6, 214, 225, 0.5);
+        }
+        
+        .animated-button span {
+            position: relative;
+            top: 15px;
+            z-index: 1;
+            color: rgb(246, 11, 11);
+            transition: transform 0.12s, color 0.12s;
+        }
+        
+        
+        .animated-button:hover span {
+            transform: scale(1.29);
+            color: #4806e1; 
+        }
+        
+        
+        .button-image {
+            position: absolute;
+            bottom: 10px;
+            width: 90px;
+            height: 90px;
+            transition: transform 0.12s;
+            z-index: 1;
+        }
+        
+        .animated-button:hover .button-image {
+            transform: translateY(-27px) rotate(130deg);
+        }
+        
+        
+        .animated-button:nth-child(1)::before {
+            background-image: url('https://w7.pngwing.com/pngs/267/619/png-transparent-computer-icons-login-sign-up-button-miscellaneous-angle-text-thumbnail.png');
+        }
+        
+        .animated-button:nth-child(2)::before {
+            background-image: url('https://thumbs.dreamstime.com/z/iconos-de-la-lista-tareas-en-botones-vidrio-iluminados-por-color-esf%C3%A9rico-sobre-fondo-negro-se-puede-utilizar-para-plantillas-u-193967228.jpg');
+        }
+        
+        .animated-button:nth-child(3)::before {
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtU6rYgnd7dU3LWIVD62JMmYsb7uqvjY88lQ&s');
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <a href="formulario-resgistro.html" target="_blank" class="animated-button">
+            <span>REGÍSTRATE</span>
+            <img src="https://cdn.pixabay.com/animation/2022/10/28/21/59/21-59-56-65_512.gif" alt="Muñeco 1" class="button-image">
+        </a>
+        <a href="lista de tareas.html" target="_blank" class="animated-button">
+            <span>LISTAS DE TAREAS</span>
+            <img src="https://i.pinimg.com/originals/c7/5f/9e/c75f9ed414bfac2d71f9d02634e6dcea.gif" alt="Muñeco 2" class="button-image">
+        </a>
+        <a href="buscador.html" target="_blank" class="animated-button">
+            <span>BÚSQUEDA</span>
+            <img src="https://teletype.in/files/20/71/2071e455-0394-4bea-be44-a0d172899fb3.gif" alt="Muñeco 3" class="button-image">
+        </a>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,229 @@
+<html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Lista de Tareas</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+          background-color: #dc3545;
+        }
+    
+        .todo-container {
+          width: 100%;
+          max-width: 400px;
+          background-color: #aaa;
+          border: 20px solid #0b668b;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+          animation: fadeIn 6s ease-in-out;
+        }
+    
+        h2 {
+          text-align: center;
+          color: #333;
+          margin-bottom: 15px;
+        }
+    
+        .input-group {
+          display: flex;
+          margin-bottom: 20px;
+        }
+    
+        input[type="text"] {
+          flex: 1;
+          padding: 10px;
+          font-size: 16px;
+          border: 2px solid #cf950e;
+          border-radius: 4px;
+          margin-right: 10px;
+          transition: border-color 0.3s;
+        }
+    
+        input[type="text"]:focus {
+          border-color: #8b0b5a;
+        }
+    
+        button {
+          padding: 10px 15px;
+          font-size: 16px;
+          color: #000;
+          background-color: #addc1e;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: transform 0.6s;
+        }
+    
+        button:hover {
+          transform: scale(1.95);
+        }
+    
+        ul {
+          list-style-type: none;
+          padding: 0;
+        }
+    
+        li {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 10px;
+          border-bottom: 1px solid #33ce81;
+          opacity: 0;
+          animation: slideIn 0.9s forwards;
+        }
+    
+        li.completado {
+          text-decoration: line-through;
+          color: #8b0b5a;
+          background-color: #c7df50;
+        }
+    
+        .delete-btn {
+          background-color: #000;
+          color: #901a68;
+          border: none;
+          padding: 5px 10px;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+    
+        .delete-btn:hover {
+          background-color: #4a4a4a;
+        }
+    
+        .result-container {
+          margin-top: 25px;
+          padding: 10px;
+          background-color: #cbce0c;
+          border-radius: 8px;
+          border: 20px solid #0bbbb5;
+          max-height: 200px;
+          overflow-y: auto;
+          font-size: 23px;
+        }
+    
+        ol {
+          padding-left: 20px;
+        }
+    
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+    
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+    
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+    
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      </style>
+    </head>
+    
+    <body>
+      <div class="todo-container">
+        <h2>Lista de Tareas</h2>
+        <div class="input-group">
+          <input type="text" id="entradaTarea" placeholder="Ingresa una nueva tarea">
+          <button onclick="agregarTarea()">Agregar</button>
+        </div>
+        <ul id="listaTareas"></ul>
+        <div class="result-container" id="resultContainer">
+          <strong>Resultados:</strong>
+          <div>
+            <strong>Tareas añadidas:</strong>
+            <ol id="addedTasks"></ol>
+          </div>
+          <div>
+            <strong>Tareas eliminadas:</strong>
+            <ol id="removedTasks"></ol>
+          </div>
+        </div>
+        <button type="button" onclick="window.location.href='INDEX.html'">Volver</button> 
+      </div>
+    
+      <script>
+        let addedTasksList = [];
+        let removedTasksList = [];
+    
+        function agregarTarea() {
+          const entradaTarea = document.getElementById("entradaTarea");
+          const textoTarea = entradaTarea.value.trim();
+    
+          if (textoTarea === "") {
+            alert("Por favor, ingresa una tarea.");
+            return;
+          }
+    
+          const listaTareas = document.getElementById("listaTareas");
+    
+          const listItem = document.createElement("li");
+          listItem.innerText = textoTarea;
+    
+          listItem.addEventListener("click", function () {
+            if (!listItem.classList.contains("completado")) {
+              listItem.classList.add("completado");
+            } else {
+              listItem.classList.remove("completado");
+            }
+          });
+    
+          const deleteButton = document.createElement("button");
+          deleteButton.innerText = "Eliminar";
+          deleteButton.className = "delete-btn";
+          deleteButton.addEventListener("click", function () {
+            
+            console.log(`Tarea eliminada: ${textoTarea}`);
+            removedTasksList.push(textoTarea);
+            updateResultContainer();
+            listaTareas.removeChild(listItem);
+          });
+    
+          listItem.appendChild(deleteButton);
+          listaTareas.appendChild(listItem);
+    
+          
+          console.log(`Tarea añadida: ${textoTarea}`);
+          addedTasksList.push(textoTarea);
+          updateResultContainer();
+    
+          entradaTarea.value = "";
+        }
+    
+        function updateResultContainer() {
+          
+          const addedTasksText = addedTasksList.map((task, index) => `<li>Tarea ${index + 1}: ${task}</li>`).join('');
+          const removedTasksText = removedTasksList.map((task, index) => `<li>Tarea ${index + 1}: ${task}</li>`).join('');
+    
+          document.getElementById("addedTasks").innerHTML = addedTasksText;
+          document.getElementById("removedTasks").innerHTML = removedTasksText;
+        }
+      </script>
+    </body>
+    
+    </html>
+    
+    
+
+

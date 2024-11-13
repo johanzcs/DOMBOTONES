@@ -1,0 +1,242 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Tabla</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 150vh;
+            margin: 0;
+            background-color: #14c32e;
+
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #d96034;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #ddd;
+            border: 25px solid;
+            color: black;
+            
+        }
+
+        h2 {
+            text-align: center;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+
+        .search-group {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #da1111;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            color: #000000;
+            background-color: #0b96e7;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.11s;
+        }
+
+        button:hover {
+            transform: scale(1.75);
+            color: #d96034;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #24c837;
+        }
+
+        
+        .highlight {
+            background-color: #2b9bcf;
+            transition: background-color 0.5s ease, transform 0.5s ease, opacity 0.5s ease;
+            transform: scale(1.25);
+            opacity: 0.9;
+        }
+
+        .result-container {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #000000;
+        }
+
+        .history-container {
+            margin-top: 30px;
+            padding: 10px;
+            background-color: #e7f7f7;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .history-container h3 {
+            margin-top: 0;
+        }
+
+        .history-container ul {
+            padding-left: 20px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Buscador en Tabla</h2>
+        <div class="search-group">
+            <input type="text" id="searchInput" placeholder="Ingresa un término de búsqueda">
+            <button onclick="buscarEnTabla()">Buscar</button>
+        </div>
+        <div class="result-container" id="resultContainer">Resultados encontrados: 0</div>
+
+        <table id="tablaDiccionario">
+            <thead>
+                <tr>
+                    <th>Palabra</th>
+                    <th>Significado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Hola</td><td>Expresión de saludo</td></tr>
+                <tr><td>Adios</td><td>Expresión de despedida</td></tr>
+                <tr><td>Casa</td><td>Edificio para habitar</td></tr>
+                <tr><td>Casa</td><td>Hogar o familia</td></tr>
+                <tr><td>Perro</td><td>Animal doméstico, mejor amigo del hombre</td></tr>
+                <tr><td>Amor</td><td>Sentimiento de afecto profundo</td></tr>
+                <tr><td>Amor</td><td>Pasión o entusiasmo por algo</td></tr>
+                <tr><td>Banco</td><td>Asiento para varias personas</td></tr>
+                <tr><td>Banco</td><td>Institución financiera</td></tr>
+                <tr><td>Planta</td><td>Organismo vegetal</td></tr>
+                <tr><td>Planta</td><td>Nivel de un edificio</td></tr>
+            </tbody>
+        </table>
+
+        
+        <div class="history-container" id="historyContainer">
+            <h3>Historial de Búsquedas:</h3>
+            <ul id="historyList">
+               
+            </ul>
+        </div>
+        <button type="button" onclick="window.location.href='INDEX.html'">Volver</button> 
+    
+    </div>
+    
+
+    <script>
+        
+        let historialBusqueda = {};
+
+        function buscarEnTabla() {
+            const terminoBusqueda = document.getElementById("searchInput").value.trim();
+            const tabla = document.getElementById("tablaDiccionario");
+            const filas = tabla.getElementsByTagName("tr");
+            let contadorResultados = 0;
+            let palabrasEncontradas = {};  
+
+            
+            for (let i = 1; i < filas.length; i++) {
+                filas[i].classList.remove("highlight");
+            }
+
+            if (terminoBusqueda === "") {
+                document.getElementById("resultContainer").innerText = "Resultados encontrados: 0";
+                console.clear();
+                console.log("Resultados encontrados: 0");
+                return;
+            }
+
+            
+            for (let i = 1; i < filas.length; i++) {
+                const celdas = filas[i].getElementsByTagName("td");
+                let filaCoincide = false;
+
+                for (let j = 0; j < celdas.length; j++) {
+                    if (celdas[j].innerText.includes(terminoBusqueda)) {
+                        filaCoincide = true;
+                        contadorResultados++;
+
+                        
+                        const palabra = celdas[0].innerText;
+                        const significado = celdas[1].innerText;
+                        if (!palabrasEncontradas[palabra]) {
+                            palabrasEncontradas[palabra] = [];
+                        }
+                        palabrasEncontradas[palabra].push(significado);
+                    }
+                }
+
+                if (filaCoincide) {
+                    filas[i].classList.add("highlight");
+                }
+            }
+
+            
+            document.getElementById("resultContainer").innerText = `Resultados encontrados: ${contadorResultados}`;
+            console.clear();
+            console.log(`Resultados encontrados: ${contadorResultados}`);
+
+            
+            if (palabrasEncontradas) {
+                for (let palabra in palabrasEncontradas) {
+                    if (!historialBusqueda[palabra]) {
+                        historialBusqueda[palabra] = { count: 0, significados: [] };
+                    }
+
+                    
+                    historialBusqueda[palabra].count += 1;
+                    historialBusqueda[palabra].significados = historialBusqueda[palabra].significados.concat(palabrasEncontradas[palabra]);
+                }
+
+                
+                actualizarHistorial();
+            }
+        }
+
+        
+        function actualizarHistorial() {
+            const historyList = document.getElementById("historyList");
+            historyList.innerHTML = ""; 
+
+            
+            for (let palabra in historialBusqueda) {
+                const count = historialBusqueda[palabra].count;
+                const significados = historialBusqueda[palabra].significados;
+                historyList.innerHTML += `<li><strong>${palabra} (${count} vez${count > 1 ? 's' : ''})</strong>:<br> ${significados.map((s, index) => `<strong>${palabra} ${index + 1}</strong>: ${s}`).join("<br>")}</li>`;
+            }
+        }
+    </script>
+</body>
+
+</html>
+
